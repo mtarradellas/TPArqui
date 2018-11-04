@@ -3,6 +3,7 @@
 #include <lib.h>
 #include <moduleLoader.h>
 #include <naiveConsole.h>
+#include "videoDriver.h"
 
 void loadIDT(void);	
 
@@ -59,7 +60,7 @@ int main() {
 	//despues hay que llamar a otra funcion en 
 	//user space que abre el commands shell
 
-	while(1);
+	((EntryPoint)sampleCodeModuleAddress)();
 	
 	ncPrint("bye");
 	ncNewline();

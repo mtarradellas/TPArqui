@@ -4,6 +4,7 @@
 
 #include "videoDriver.h"
 #include "font.h"
+#include "naiveConsole.h"
 
 #define CHAR_WIDTH 6
 #define CHAR_HEIGHT 8

@@ -10,51 +10,53 @@
 		** VESA tutorial **
 */
 
-typedef struct __attribute__ ((packed)) vbe_mode_info_structure {
-	uint16_t attributes;		// deprecated, only bit 7 should be of interest to you, and it indicates the mode supports a linear frame buffer.
-	uint8_t window_a;			// deprecated
-	uint8_t window_b;			// deprecated
-	uint16_t granularity;		// deprecated; used while calculating bank numbers
-	uint16_t window_size;
-	uint16_t segment_a;
-	uint16_t segment_b;
-	uint32_t win_func_ptr;		// deprecated; used to switch banks from protected mode without returning to real mode
-	uint16_t pitch;			// number of bytes per horizontal line
-	uint16_t width;			// width in pixels
-	uint16_t height;			// height in pixels
-	uint8_t w_char;			// unused...
-	uint8_t y_char;			// ...
-	uint8_t planes;
-	uint8_t bpp;			// bits per pixel in this mode
-	uint8_t banks;			// deprecated; total number of banks in this mode
-	uint8_t memory_model;
-	uint8_t bank_size;		// deprecated; size of a bank, almost always 64 KB but may be 16 KB...
-	uint8_t image_pages;
-	uint8_t reserved0;
- 
-	uint8_t red_mask;
-	uint8_t red_position;
-	uint8_t green_mask;
-	uint8_t green_position;
-	uint8_t blue_mask;
-	uint8_t blue_position;
-	uint8_t reserved_mask;
-	uint8_t reserved_position;
-	uint8_t direct_color_attributes;
- 
-	uint32_t framebuffer;		// physical address of the linear frame buffer; write here to draw to the screen
-	uint32_t off_screen_mem_off;
-	uint16_t off_screen_mem_size;	// size of memory in the framebuffer but not being displayed on the screen
-	uint8_t reserved1[206];
-} vesaModeStruct;
+typedef struct __attribute__((packed)) ModeInfoBlock {
+        uint16_t ModeAttributes;
+        uint8_t WinAAttributes;
+        uint8_t WinBAttributes;
+        uint16_t WinGranularity;
+        uint16_t WinSize;
+        uint16_t WinSegmentA;
+        uint16_t WinSegmentB;
+        uint32_t WinRealFctPtr;
+        uint16_t pitch; // Bytes per ScanLine.
+
+        uint16_t XResolution;
+        uint16_t YResolution;
+        uint8_t XcharSize;
+        uint8_t YcharSize;
+        uint8_t NumberOfPlanes;
+        uint8_t BitsPerPixel;
+        uint8_t NumberOfBanks;
+        uint8_t MemoryModel;
+        uint8_t BankSize;
+        uint8_t NumberOfImagePages;
+        uint8_t ReservedPage;
+
+        uint8_t RedMaskSize;
+        uint8_t RedMaskPosition;
+        uint8_t GreenMaskSize;
+        uint8_t GreenMaskPosition;
+        uint8_t BlueMaskSize;
+        uint8_t BlueMaskPosition;
+        uint8_t ReservedMaskSize;
+        uint8_t ReservedMaskPosition;
+        uint8_t DirectColorAttributes;
+
+        uint32_t PhysBasePtr;  // Your LFB (Linear Framebuffer) address.
+        uint32_t OffScreenMemOffset;
+        uint16_t OffScreenMemSize;
+} Vesa;
+
+typedef struct ModeInfoBlock  * vesaModeStruct;
 
 /*
 	data type color based on RGB composition
 */
-typedef struct {
-		unsigned char red;
-		unsigned char green;
-		unsigned char blue;
+typedef struct Color{
+		uint8_t red;
+		uint8_t green;
+		uint8_t blue;
 } Color;
 
 
@@ -66,6 +68,6 @@ void drawChar(char c, int x, int y, Color color);
 void printChar(char c, Color color);
 void delChar();
 void newLine();
-void reAccomodateScreen();
+void accomodateScreen();
 
 #endif

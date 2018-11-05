@@ -1,6 +1,8 @@
 //#include <time.h>
 #include <stdint.h>
 #include <keyboardDriver.h>
+#include <videoDriver.h>
+#include <naiveConsole.h>
 
 void int20(void);
 void int21(void);

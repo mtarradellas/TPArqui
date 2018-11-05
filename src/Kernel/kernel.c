@@ -52,18 +52,11 @@ void * initializeKernelBinary()
 }
 
 int main() {
-	
-	ncPrint("hi");
-	ncNewline();
 
-	loadIDT();	//por ahora solo estaba probando la idt
-	//despues hay que llamar a otra funcion en 
-	//user space que abre el commands shell
+	loadIDT();
+	ncClear();
 
 	((EntryPoint)sampleCodeModuleAddress)();
-	
-	ncPrint("bye");
-	ncNewline();
 
 	return 1;
 }

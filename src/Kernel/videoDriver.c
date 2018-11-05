@@ -1,48 +1,56 @@
 /*  
-	********* VIDEO CONTROL *********
+    ********* VIDEO CONTROL *********
 */
 
 #include "videoDriver.h"
-#include "font.h"
-#include "naiveConsole.h"
+#include "charFont.h"
+#include <naiveConsole.h>
+#include <lib.h>
 
-#define CHAR_WIDTH 6
-#define CHAR_HEIGHT 8
+#define CHAR_WIDTH 8
+#define CHAR_HEIGHT 11
+
 #define LINE_SPACE 2// SPACE BETWEEN LINES
-#define CHAR_SPACE 1// SPACE BETWEEN CHARACTERS
-
+#define CHAR_SPACE 0// SPACE BETWEEN CHARACTERS
+#define MARGIN 4
 /*
-	common colors
+    get the contents for the struct 
+    location obtained from Pure64 System Variables 
+    VBEModeInfoBlock:   equ 0x0000000000005C00  
 */
-Color black = {0, 0, 0};
-Color white = {255, 255, 255};
-Color blue = {0, 0, 255};
-Color green = {0, 255, 0};
-Color red = {255, 0, 0};
+vesaModeStruct videoStruct = (vesaModeStruct)0x5C00;
 
-static vesaModeStruct * videoStruct = (vesaModeStruct*)0x5C00; 	//get the contents for the struct FROM?
+//cursor position(coordenates within the screen)
+static int cursor_x = MARGIN;
+static int cursor_y = MARGIN;
+/*
+    common colors
+*/
+static Color black = {0, 0, 0}; //used for background
+static Color white = {255, 255, 255}; // default font color
+static Color blue = {0, 0, 255};
+static Color green = {0, 255, 0};
+static Color red = {255, 0, 0};
 
-//cursor position(coordinates within the screen). Initialized in order to leave a small margin
-static int cursor_x = CHAR_SPACE;
-static int cursor_y = LINE_SPACE;
 
 //transforms intRGB values to individual R, G and B values and returns a color struct
 Color getColor(int intRGB){
-	Color color;
-	color.blue = intRGB & 255;
-	color.green = (intRGB >> 8) & 255;
-	color.red = (intRGB >> 16) & 255;
-	return color;
+    Color color;
+    color.blue = intRGB & 255;
+    color.green = (intRGB >> 8) & 255;
+    color.red = (intRGB >> 16) & 255;
+    return color;
 }
 /*
-	plots pixel in the desired coordinates (x, y) and with the color provided
+    plots pixel in the desired coordinates (x, y) and with the color provided
 
-	PORQUE DIVIDE POR 8??????/ SI ES POR LOS CARACTERES, CAMBIAR A 6?? / puse char width, pero ni idea
+    PORQUE DIVIDE POR 8??????/ SI ES POR LOS CARACTERES, CAMBIAR A 6?? / puse char width, pero ni idea
 */
 void plotPixel(int x, int y, Color color){
 
-    unsigned int where = y * videoStruct->pitch + x * (videoStruct->bpp/CHAR_WIDTH);
-    unsigned char* screen = ( unsigned char* ) (videoStruct->framebuffer);
+//    int where = y * videoStruct->pitch + x * (videoStruct->BitsPerPixel/CHAR_WIDTH);
+    int where = y * videoStruct->pitch + x * (videoStruct->BitsPerPixel/8);       
+    char* screen = (char* ) (videoStruct->PhysBasePtr);
     screen[where] = color.blue;
     screen[where + 1] = color.green;  
     screen[where + 2] = color.red;
@@ -50,119 +58,89 @@ void plotPixel(int x, int y, Color color){
 }
 
 
-// draws char by pixel acording to  font array located in font.h
+// draws char by pixel acording to  font array located in font.h (not for user use)
 void drawChar(char c, int x, int y, Color color) {
-    int i,j;
-
-    // Convert the character to an index
-    c = c & 0x7F;
-    if (c < ' ') {
-        c = 0;
-    } else {
-        c -= ' ';
-    }
-
-    // 'font' is a multidimensional array of [96][char_width]
-    // which is really just a 1D array of size 96*char_width.
-    const unsigned char* chr = font[c*CHAR_WIDTH];	//cambie unit8 por unsignes char
-
-    // Draw pixels
-    for (j=0; j<CHAR_WIDTH; j++) {
-        for (i=0; i<CHAR_HEIGHT; i++) {
-
-            if (chr[j] & (1<<i)) {
-                plotPixel(x+j, y+i, color);	//NECESITO PONER LOS ESPACIOS ENTRE PIXELES?
-            }/*
-            else{
-            	plotPixel(x+j, y+i, black);		necesito depende de la pantalla?
-            }*/
+    
+    if (c > 31){//our font map has characters starting at 31 on the ascii      antes > estricto  ****                
+        char * charDesign= charMap((int)c - 1);
+        for (int j=0; j < CHAR_HEIGHT; j++){
+            for (int i = 0; i < CHAR_WIDTH; i++) {
+                if ((1<<i) & charDesign[j]){   
+                    plotPixel((CHAR_WIDTH - i) + x, j + y, color); //antes sin WIDTH y cursor_x, cursor_y  ****
+                }
+                else{
+                    plotPixel((CHAR_WIDTH - i) + x, j + y, black);
+                }
+            }
         }
     }
 }
 
-void printChar(char c, Color color) {
-    reAccomodateScreen();	//sets cursor in a valid position in order to print on screen
+
+/* 
+    for user use
+    checks if it is a special character (\n or \b)
+    calls draw char
+    reaaccomodates coordenates of cursor
+*/
+void printChar(char c, Color color) {   
     if (c == '\n') {
        newLine();
-        //cursor_x2 = cursor_x;
-        //cursor_y2 = cursor_y;		??????????????
-        return;
-    } else if (c == '\b') {
-        delChar();
-        return;
     }
-    drawChar(c, cursor_x, cursor_y, color);
-    cursor_x += CHAR_WIDTH + CHAR_SPACE;
-    reAccomodateScreen();
+    else if (c == '\b') {
+        delChar();
+    
+    }
+    else{
+        drawChar(c, cursor_x, cursor_y, color);
+        cursor_x += CHAR_WIDTH + CHAR_SPACE;
+    }
+    accomodateScreen();
 }
+
 /*
-	erases char in current line, if there is none it goes to the previous line
+    erases char in current line, if there is none it goes to the previous line
 */
 void delChar() {
 
     cursor_x -= (CHAR_WIDTH + CHAR_SPACE);
-    /*if (cursor_x2 > cursor_x) {
-        if (cursor_y2 < cursor_y) {
-            cursor_x += (CHAR_WIDTH + CHAR_SPACE);	????????//
-            return;
-        }
-    }*/
-    reAccomodateScreen(); //corrects cursor if it ended in an invalid position after erasing character
-    printChar(' ', black);
-    // ?????????????
+    accomodateScreen(); //corrects cursor if it ended in an invalid position after erasing character
+    drawChar(' ', cursor_x, cursor_y, black);
 }
 
 void newLine() {
     cursor_y += CHAR_HEIGHT + LINE_SPACE;
-    cursor_x = CHAR_SPACE;
-    reAccomodateScreen();
+    cursor_x = MARGIN;
 }
 
 /*
-	checks if the cursor is out of boundaries and acts accordingly
+    checks if the cursor is out of boundaries and acts accordingly
 
-	scrolls screen up if it has run out of space
+    scrolls screen up if it has run out of space
 */
-void reAccomodateScreen() {
-	// checks if the cursor is beyond the width of the screen of if it is where the next character would end up outside
-    if ((videoStruct->width - CHAR_SPACE) <= cursor_x || ((videoStruct->width - cursor_x) < (CHAR_WIDTH))) {
-        newLine();
+void accomodateScreen() {
+    if (cursor_x + CHAR_WIDTH + CHAR_SPACE + MARGIN > videoStruct->XResolution) {  
+            newLine();
+    } 
+    else if (cursor_x < MARGIN) {
+        cursor_x = MARGIN;
+        cursor_y -= (LINE_SPACE + CHAR_HEIGHT);
     }
-    // checks if the cursor is beyond the height of the screen and scrolls
-    else if ((videoStruct->height - LINE_SPACE - CHAR_HEIGHT) <= cursor_y) {
-        cursor_y -= (CHAR_HEIGHT + LINE_SPACE);
-       // moveScreenUp();
-    } 
-    //minimum height for cursor is the margin (considering height increses downward)
-    else if (cursor_y < LINE_SPACE) {
-        cursor_y = LINE_SPACE;
-    } 
-    //if cursor is located further to the left than minumun margin it is re positioned in the previous line
-    else if (cursor_x < CHAR_SPACE) {
-        if (cursor_y > (LINE_SPACE + CHAR_HEIGHT)) { //cursor is not in the first line
-            cursor_y -= (LINE_SPACE + CHAR_HEIGHT);
-            cursor_x = (CHAR_SPACE + CHAR_WIDTH)* (videoStruct->width / (CHAR_SPACE + CHAR_WIDTH)) + CHAR_SPACE; //locates the cursor at the end of the line
-        } 
-        else { //cursor is set at the begining
-            cursor_x = CHAR_SPACE; 
-        }
+    if (cursor_y + CHAR_HEIGHT + LINE_SPACE + MARGIN > videoStruct->YResolution) { 
+            scrollUp();
+    }
+    else if (cursor_y < MARGIN) {
+        cursor_y = MARGIN;
     }
 }
-/*
-//corre las lineas hacia arriba excluyendo la ultima
-void moveScreenUp() {
-    unsigned whereOnScreen = (CHAR_HEIGHT+(2*Y_SPACE))*(video->pitch) + X_SPACE*(video->BitsPerPixel/8);
-    char * source = (char *) (video->PhysBasePtr + whereOnScreen);
-    unsigned whereOnScreen2 = (Y_SPACE)*(video->pitch) + X_SPACE*(video->BitsPerPixel/8);
-    char * dest = (char *) (video->PhysBasePtr + whereOnScreen2);
-    int size = (video->YResolution)*(video->XResolution)*3;
-    memCpy(dest, source, size);
-    for (int y = YPOSITION ; y < video->YResolution; y ++) { //Y_SPACE
-        for (int x = X_SPACE; x < video->XResolution-X_SPACE; x++) {
-            putPixel(x, y , black);
-        }
-    }
 
-}*/
-
-
+void scrollUp() {
+    int whereFrom = (MARGIN + 3*(CHAR_HEIGHT + LINE_SPACE)) * videoStruct->pitch + MARGIN * (videoStruct->BitsPerPixel/8);       
+    char * source = (char *) (videoStruct->PhysBasePtr + whereFrom);
+    int whereTo = MARGIN * videoStruct->pitch + MARGIN * (videoStruct->BitsPerPixel/8);       
+    char * dest = (char *) (videoStruct->PhysBasePtr + whereTo);
+    int size = (videoStruct->YResolution)*(videoStruct->XResolution)*3;
+    memcpy(dest, source, size);
+    cursor_x = MARGIN;
+    cursor_y = videoStruct->YResolution - MARGIN - 3*(CHAR_HEIGHT + LINE_SPACE);
+}

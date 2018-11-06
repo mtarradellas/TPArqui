@@ -19,7 +19,7 @@
 #define LEFT_SHIFT 0
 #define RIGHT_SHIFT 0
 #define LEFT_ALT 0
-#define SPACE 0
+#define SPACE ' '
 #define CAPSLOCK 0
 #define F1 0
 #define F2 0

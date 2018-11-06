@@ -3,6 +3,7 @@
 #include <keyboardDriver.h>
 #include <videoDriver.h>
 #include <naiveConsole.h>
+#include <timeDriver.h>
 
 void int20(void);
 void int21(void);
@@ -23,7 +24,7 @@ void irqDispatcher(uint64_t irq) {
 }
 
 void int20() {
-	//timeHandler();
+	timeHandler();
 }
 
 void int21() {

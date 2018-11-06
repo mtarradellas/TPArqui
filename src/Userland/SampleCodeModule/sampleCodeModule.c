@@ -1,12 +1,7 @@
-#include <stdint.h>
-#include "SYSCall.h"
+#include <shell.h>
 
-//char keyTest();
+
 
 int main() {
-//	char key = keyTest();
-	while(1);
-		
+	initShell();
 }
-	//initializeShell();
-	//return 0;	

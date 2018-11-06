@@ -1,5 +1,3 @@
-
-
 #ifndef videoDriver_h
 #define videoDriver_h
 #include <stdint.h>

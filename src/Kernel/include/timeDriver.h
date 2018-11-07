@@ -3,8 +3,8 @@
 
 void timeHandler();
 int ticksElapsed();
-int getHour();
-int getMinute();
-int getSecond();
+unsigned int getHour();
+unsigned int getMinute();
+unsigned int getSecond();
 
 #endif

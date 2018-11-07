@@ -67,5 +67,6 @@ void printChar(char c, Color color);
 void delChar();
 void newLine();
 void accomodateScreen();
+void clear();
 
 #endif

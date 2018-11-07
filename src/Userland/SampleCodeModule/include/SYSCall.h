@@ -1,5 +1,6 @@
 #ifndef systemCall_h
 #define systemCall_h
+#include <stdint.h>
 
 #define READ 0
 #define WRITE 1

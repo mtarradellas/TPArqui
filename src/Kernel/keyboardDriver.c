@@ -1,7 +1,7 @@
 #include <keyboardDriver.h>
-static char SHIFT_ON = 0;
-static char CAPSLOCK_ON = 0;
-static int size = 0;
+char SHIFT_ON = 0;
+char CAPSLOCK_ON = 0;
+int size = 0;
 char buffer[BUFFER_SIZE] = {0};
 int index = 0;
 int getIndex = 0;

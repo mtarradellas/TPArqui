@@ -4,4 +4,5 @@
 
 int main() {
 	initShell();
+	return 0;
 }

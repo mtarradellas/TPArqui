@@ -144,3 +144,13 @@ void scrollUp() {
     cursor_x = MARGIN;
     cursor_y = videoStruct->YResolution - MARGIN - 3*(CHAR_HEIGHT + LINE_SPACE);
 }
+
+void clear() {
+    for (int y = 0; y < videoStruct->YResolution; y++) {
+        for (int x = 0; x < videoStruct->XResolution; x++) {
+            plotPixel(x, y, black);
+        }
+    }
+    cursor_x = MARGIN;
+    cursor_y = MARGIN;
+}

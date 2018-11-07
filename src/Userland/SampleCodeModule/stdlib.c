@@ -16,10 +16,10 @@ void printf(char * fmt, ...) {
 			putChar(*fmt);
 		}
 		else {
-			switch(*fmt) {
+			switch(*(fmt+1)) {
 				case 'd':
 					aux = va_arg(args, int);
-					putChar('0'+aux);
+					putDec(aux);
 					break;
 				case 's':
 					str = va_arg(args, char *);
@@ -33,6 +33,7 @@ void printf(char * fmt, ...) {
 					putChar(aux);
 					break;
 			}
+			fmt++;
 		}
 		fmt++;
 	}
@@ -76,37 +77,50 @@ char getChar() {
 	return c;
 }
 
-void scanAndPrint() {
-
-  char k;
-  Color white = {255, 255, 255};
-
-  while(((k = getChar()) != '\n')){
-    if (k > 0 && k < 127) {
-      systemCall((uint64_t)WRITE, (uint64_t)CHARACTER, (uint64_t)&k, (uint64_t)&white, 0, 0 );
-    }
-  }
+void scanAndPrint(char * buffer) {
+	char c;
+	char * p = buffer;
+	int idx = 0;
+	while((c = getChar()) != '\n') {
+		if (c>31) {
+			if (c == '\b' && idx > 0) {
+				deleteChar();
+				p--;
+				idx--;
+			}
+			else if (c!='\b'){
+				putChar(c);
+				*p = c;
+				p++;
+				idx++;
+			}
+		}
+	}
+	*p = 0;  
 }
 
-int getHour() {
-	int t;
-	systemCall((uint64_t)READ, (uint64_t)TIME, (uint64_t)&t, (uint64_t)HOUR, 0, 0);
-	return t;
+void clearBuffer(char * buffer) {
+	char * b = buffer;
+	while (*b) {
+		*b = 0;
+		b++;
+	}
 }
 
-int getMinute() {
-	int t;
-	systemCall((uint64_t)READ, (uint64_t)TIME, (uint64_t)&t, (uint64_t)MINUTE, 0, 0);
-	return t;
+int strCmp(char * a, char * b) {
+	while (*a && *b) {
+		if (*a > *b) return 1;
+		if (*a < *b) return -1;
+		a++;
+		b++;
+	}
+	if (*a) return 1;
+	if (*b)	return -1;
+	return 0;
 }
-
-int getSecond() {
-	int t;
-	systemCall((uint64_t)READ, (uint64_t)TIME, (uint64_t)&t, (uint64_t)SECOND, 0, 0);
-	return t;
-}
-
+/*
 char * getTime() {
 	char buffer[8];
 	
 }
+*/

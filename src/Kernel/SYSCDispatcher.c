@@ -16,7 +16,7 @@ void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, 
 }
 
 void read(uint64_t mode, uint64_t dest, uint64_t time) {
-	int * t = (int *) dest;
+	unsigned int * t = (unsigned int *) dest;
 	char * c = (char *) dest; /*
 	if (mode == KEY) {
 		c = (char*) dest;
@@ -41,6 +41,7 @@ void write(uint64_t mode, char * c, Color * color, uint64_t p3, uint64_t p4) {
 		//case STRING:
 
 		case CLEAR:
+			clear();
 			break;
 
 		case PAINT:
@@ -49,7 +50,7 @@ void write(uint64_t mode, char * c, Color * color, uint64_t p3, uint64_t p4) {
 }
 
 
-void getTime(int * t, uint64_t time) {
+void getTime(unsigned int * t, uint64_t time) {
 	switch(time) {
 		case HOUR:
 			*t = getHour();

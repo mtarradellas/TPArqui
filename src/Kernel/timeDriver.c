@@ -11,17 +11,17 @@ int ticksElapsed() {
 	return ticks;	
 }
 
-int getHour() {
-	int * t = _getHour();
-	return *t;
+unsigned int getHour() {
+	unsigned int t = _getHour();
+	return t;
 }
 
-int getMinute() {
-	int * t = _getMinute();
-	return *t;
+unsigned int getMinute() {
+	unsigned int t = _getMinute();
+	return t;
 }
 
-int getSecond() {
-	int * t = _getSecond();
-	return *t;
+unsigned int getSecond() {
+	unsigned int t = _getSecond();
+	return t;
 }

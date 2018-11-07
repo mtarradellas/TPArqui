@@ -44,9 +44,10 @@ _getSecond:
 statusRegisterB:
 	push rbp
   	mov rbp, rsp
-	mov al,0x0B		; get RTC status register B settings
-	call get
-	or al, 0x04	; 
+	mov al,0x0B ; RTC Status Register B
+	out 70h,al
+	in al, 71h
+	or al, 0x04 ; Second bit = 1
 	out 71h, al
 	mov rsp, rbp
   	pop rbp

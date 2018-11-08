@@ -8,7 +8,7 @@
 #define TIME 1
 
 #define CHARACTER 0
-#define STRING 1
+#define DRAWCHR 1
 #define CLEAR 2
 #define PAINT 3
 

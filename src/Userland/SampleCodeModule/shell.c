@@ -2,7 +2,7 @@
 #include "stdlib.h"
 #include <stdint.h>
 #include "timeModule.h"
-#include "pongModule.h"
+//#include "pongModule.h"
 
 int on = 1;
 void initShell(){
@@ -96,7 +96,7 @@ void time(){
 }
 
 void pong() {
-  startPong();
+  //startPong();
 }
 
 void zeroDiv() {

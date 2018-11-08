@@ -76,7 +76,6 @@ void drawChar(char c, int x, int y, Color color) {
     }
 }
 
-
 /* 
     for user use
     checks if it is a special character (\n or \b)

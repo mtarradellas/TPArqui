@@ -1,8 +1,6 @@
 #include <stdint.h>
 #include <defs.h>
 #include <interruptions.h>
-#include <naiveConsole.h>
-
  
 #pragma pack(push)  // push current alignment
 #pragma pack (1)    // alignes structures to 1 byte

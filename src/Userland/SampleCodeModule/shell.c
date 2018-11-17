@@ -113,6 +113,8 @@ void alePuto() {
 
 void lenia() {
   printf("\nlenia te amo <3\n");
+  wait(5);
+  printf("<<<<<<<<<<<<<<<<<<<<<<<<3333333333333333333333333\n");
 }
 
 void shellShock() {

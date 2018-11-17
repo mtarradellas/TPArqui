@@ -1,11 +1,15 @@
 /*#ifndef PONGMODULE_H
 #define PONGMODULE_H
 
-#define INITPY	500
+#define INITPY	500 //mitad de pantalla
+
+#define LEFT 0
+#define RIGHT 1
 
 typedef struct player{
 	int points = 0;
 	int pos = INITY;
+	int side;
 } Player;
 
 typedef struct ball{
@@ -16,8 +20,8 @@ typedef struct ball{
 } Ball;
 
 void startPong();
-void printInitScreen(Player p1, Player p2, Ball ball);
 Player play(Player p1, Player p2, Ball ball);
+void printInitScreen(Player p1, Player p2, Ball ball);
 void printWinScreen(Player player);
 void updateScreen();
 void printPlayer(Player player);

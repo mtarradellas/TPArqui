@@ -4,6 +4,7 @@
 
 #define READ 0
 #define WRITE 1
+#define WAIT 2
 
 #define KEY 0
 #define TIME 1

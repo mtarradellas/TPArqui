@@ -3,12 +3,13 @@
 
 #define READ 0
 #define WRITE 1
+#define WAIT 2
 
 #define KEY 0
 #define TIME 1
 
 #define CHARACTER 0
-#define DRAWCHR 1
+#define DRAWCHAR 1
 #define CLEAR 2
 #define PAINT 3
 

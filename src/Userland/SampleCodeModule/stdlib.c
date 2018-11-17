@@ -82,7 +82,7 @@ void scanAndPrint(char * buffer) {
 	char * p = buffer;
 	int idx = 0;
 	while((c = getChar()) != '\n') {
-		if (c>31) {
+		if (c>0) {
 			if (c == '\b' && idx > 0) {
 				deleteChar();
 				p--;
@@ -118,9 +118,7 @@ int strCmp(char * a, char * b) {
 	if (*b)	return -1;
 	return 0;
 }
-/*
-char * getTime() {
-	char buffer[8];
-	
+
+void wait(int n) {
+	systemCall(WAIT, (uint64_t) &n, 0, 0, 0, 0);
 }
-*/

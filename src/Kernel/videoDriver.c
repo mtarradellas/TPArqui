@@ -41,14 +41,12 @@ Color getColor(int intRGB){
     color.red = (intRGB >> 16) & 255;
     return color;
 }
+
 /*
     plots pixel in the desired coordinates (x, y) and with the color provided
-
-    PORQUE DIVIDE POR 8??????/ SI ES POR LOS CARACTERES, CAMBIAR A 6?? / puse char width, pero ni idea
 */
 void plotPixel(int x, int y, Color color){
 
-//    int where = y * videoStruct->pitch + x * (videoStruct->BitsPerPixel/CHAR_WIDTH);
     int where = y * videoStruct->pitch + x * (videoStruct->BitsPerPixel/8);       
     char* screen = (char* ) (videoStruct->PhysBasePtr);
     screen[where] = color.blue;
@@ -61,12 +59,12 @@ void plotPixel(int x, int y, Color color){
 // draws char by pixel acording to  font array located in font.h (not for user use)
 void drawChar(char c, int x, int y, Color color) {
     
-    if (c > 31){//our font map has characters starting at 31 on the ascii      antes > estricto  ****                
+    if (c > 31){//our font map has characters starting at 31 on the ascii                      
         char * charDesign= charMap((int)c - 1);
         for (int j=0; j < CHAR_HEIGHT; j++){
             for (int i = 0; i < CHAR_WIDTH; i++) {
                 if ((1<<i) & charDesign[j]){   
-                    plotPixel((CHAR_WIDTH - i) + x, j + y, color); //antes sin WIDTH y cursor_x, cursor_y  ****
+                    plotPixel((CHAR_WIDTH - i) + x, j + y, color);
                 }
                 else{
                     plotPixel((CHAR_WIDTH - i) + x, j + y, black);
@@ -122,7 +120,7 @@ void accomodateScreen() {
             newLine();
     } 
     else if (cursor_x < MARGIN) {
-        cursor_x = MARGIN;
+        cursor_x = videoStruct->XResolution - MARGIN;
         cursor_y -= (LINE_SPACE + CHAR_HEIGHT);
     }
     if (cursor_y + CHAR_HEIGHT + LINE_SPACE + MARGIN > videoStruct->YResolution) { 

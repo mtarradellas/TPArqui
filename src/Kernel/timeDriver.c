@@ -5,10 +5,16 @@ unsigned long ticks = 0;
 
 void timeHandler() {
 	ticks++;
+	
 }
 
 int ticksElapsed() {
 	return ticks;	
+}
+
+void wait(int n) {
+	int t = ticks + n;
+	while (ticks < t);
 }
 
 unsigned int getHour() {

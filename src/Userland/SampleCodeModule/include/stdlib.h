@@ -17,5 +17,6 @@ char * decToStr(int num, char * buffer);
 void scanAndPrint(char * buffer);
 int strCmp(char * a, char * b);
 void clearBuffer(char * buffer);
+void wait(int n);
 
 #endif

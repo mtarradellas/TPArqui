@@ -12,5 +12,6 @@ char * decToStr(int num, char * buffer);
 void scanAndPrint(char * buffer);
 int strCmp(char * a, char * b);
 void clearBuffer(char * buffer);
+int abs(int n);
 
 #endif

@@ -1,8 +1,6 @@
 #ifndef PONGMODULE_H
 #define PONGMODULE_H
 
-#define INITPY	500 //mitad de pantalla
-
 #define LEFT 0
 #define RIGHT 1
 
@@ -12,20 +10,26 @@
 #define P2UP 11
 #define P2DOWN 10
 
+#define UP -15
+#define DOWN 15
+
 #include "videoModule.h"
 
 typedef struct player{
 	int points;
 	int pos;
 	int side;
-} Player;
+} PlayerStruct;
 
 typedef struct ball{
 	int posX;
 	int posY;
 	int dirX;
 	int dirY;
-} Ball;
+} BallStruct;
+
+typedef PlayerStruct * Player;
+typedef BallStruct * Ball;
 
 void startPong();
 int play(Player p1, Player p2, Ball ball);
@@ -38,9 +42,8 @@ void printBall(Color color, Ball ball);
 //void printExitScreen();
 void printFrame();
 //void goal(Player player);
-//void movePlayer(int dir);
+void movePlayer(Player p, int step);
 //void moveBall();
 //void hitBall(int x, int y);
 void act(char com, Player p1, Player p2);
-
 #endif

@@ -5,10 +5,10 @@
 #include "videoModule.h"
 #include "pongModule.h"
 
-int on = 1;
 void initShell(){
 
   printf("~~Welcome to lenias shell, es una cagada %d/%d~~\n\n\n", 0, 10);
+  int on = 1;
 
   char command[MAXLEN];
   while (on){
@@ -87,7 +87,7 @@ void help() {
 
 void clear() {
   clearScreen();
-  printf("~~Welcome to Lenia's Shell~~\n\n\n");
+  printf("~~Welcome tooo Lenia's Shell~~\n\n\n");
 }
 
 void time(){
@@ -99,6 +99,7 @@ void time(){
 
 void pong() {
   startPong();
+  clear();
 }
 
 void zeroDiv() {
@@ -112,7 +113,7 @@ void invOpCode() {
 void lenia() {
   Color b = {0, 0, 255};
   printf("\nlenia te amo <3\n");
-  wait(5);
+  wait(10);
   printf("\n<<<<<<<<<<<<<<<<<<<<<<3333333333333333\n");
   /*drawBall(100, 150, 200);
   drawBall(150, 150, 400);
@@ -127,7 +128,7 @@ void lenia() {
 
 
 void exit() {
-  on = 0;
+  //on = 0;
 }
 
 void invCom() {

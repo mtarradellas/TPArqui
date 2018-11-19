@@ -2,10 +2,9 @@
 #define TIMEDriver_h
 
 void timeHandler();
-static int ticksElapsed();
-void wait(int n);
+static unsigned long ticksElapsed();
 unsigned int getHour();
 unsigned int getMinute();
 unsigned int getSecond();
-
+void wait(int n);
 #endif

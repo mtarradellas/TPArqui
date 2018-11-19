@@ -118,3 +118,8 @@ int strCmp(char * a, char * b) {
 	if (*b)	return -1;
 	return 0;
 }
+
+int abs(int n) {
+	if (n>0) return n;
+	return -n;
+}

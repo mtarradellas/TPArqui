@@ -2,7 +2,8 @@
 #include "stdlib.h"
 #include <stdint.h>
 #include "timeModule.h"
-//#include "pongModule.h"
+#include "videoModule.h"
+#include "pongModule.h"
 
 int on = 1;
 void initShell(){
@@ -42,16 +43,8 @@ void initShell(){
           invOpCode();
           break;
 
-      case ALEPUTO:
-          alePuto();
-          break;
-
       case LENIA:
           lenia();
-          break;
-
-      case SHELLSHOCK:
-          shellShock();
           break;
 
       case EXIT:
@@ -72,20 +65,29 @@ int getCommand(char * command) {
   if (!strCmp("pong", command)) return PONG;
   if (!strCmp("zerodiv", command)) return ZERODIV;
   if (!strCmp("invopcode", command)) return INVOPCODE;
-  if (!strCmp("aleputo", command)) return ALEPUTO;
   if (!strCmp("lenia", command)) return LENIA;
-  if (!strCmp("shellshock", command)) return SHELLSHOCK;
   if (!strCmp("exit", command)) return EXIT;
   return INVCOM;
 }
 
 void help() {
-  printf("\nchupala\n");
+  printf("\n********  Help Menu  ********\n");
+  printf("  * clear     :       Clears screen\n");
+  printf("  * pong      :       Iniciates pong when user presses 'enter' which will run until\n"); 
+  printf("                      end of game or until user presses 'backspace' to leave\n");
+  printf("  * invopcode :       Executes Invalid OP Code Interruption\n");
+  printf("  * zerodiv   :       Executes Zero Division Interruption\n");
+  printf("  * exit      :       Exits shell\n");
+  printf("  * lenia     :       IMPRIME BOLA\n");
+  printf("  * time      :       Displays current time\n");
+
+  printf("\n  Any other command will be taken as invalid\n\n");
+
 }
 
 void clear() {
   clearScreen();
-  printf("~~Welcome to lenias shell, es una cagada~~\n\n\n");
+  printf("~~Welcome to Lenia's Shell~~\n\n\n");
 }
 
 void time(){
@@ -96,7 +98,7 @@ void time(){
 }
 
 void pong() {
-  //startPong();
+  startPong();
 }
 
 void zeroDiv() {
@@ -107,24 +109,27 @@ void invOpCode() {
 
 }
 
-void alePuto() {
-  printf("\nale es puto y cagon\n");
-}
-
 void lenia() {
+  Color b = {0, 0, 255};
   printf("\nlenia te amo <3\n");
   wait(5);
-  printf("<<<<<<<<<<<<<<<<<<<<<<<<3333333333333333333333333\n");
+  printf("\n<<<<<<<<<<<<<<<<<<<<<<3333333333333333\n");
+  /*drawBall(100, 150, 200);
+  drawBall(150, 150, 400);
+  //drawRectangle(512, 260, 30, 60);
+  
+  int x;
+  int y;
+  getSize(&x, &y);
+  printf("\nX res: %d\nY res: %d\n", x, y);
+  drawBall(50, x/2, y/2);*/
 }
 
-void shellShock() {
-  printf("\nbautiPuto\n");
-}
 
 void exit() {
   on = 0;
 }
 
 void invCom() {
-  printf("\nque haces pelotudo\n");
+  printf("\nInvalid command\n");
 }

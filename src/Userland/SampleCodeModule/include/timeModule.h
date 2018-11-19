@@ -7,4 +7,6 @@ unsigned int getMinute();
 
 unsigned int getSecond();
 
+void wait(int n);
+
 #endif

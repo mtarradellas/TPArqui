@@ -1,4 +1,5 @@
-GLOBAL systemCall
+GLOBAL param
+EXTERN paramTest
 
 section .text
 
@@ -38,14 +39,18 @@ section .text
 	pop rax
 %endmacro
 
-systemCall:
+param:
 	push rbp
 	mov rbp, rsp
 
 	pushState
 
-	int 80h
+	mov rax, [rbp + 16]
+	push rax
 
+	call paramTest
+
+	pop rax
 	popState
 	pop rbp
  	

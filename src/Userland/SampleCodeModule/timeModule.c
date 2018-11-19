@@ -23,3 +23,7 @@ unsigned int getSecond() {
 	systemCall((uint64_t)READ, (uint64_t)TIME, (uint64_t)&t, (uint64_t)SECOND, 0, 0);
 	return t;
 }
+
+void wait(int n) {
+	systemCall((uint64_t) WAIT, (uint64_t) &n, 0, 0, 0, 0);
+}

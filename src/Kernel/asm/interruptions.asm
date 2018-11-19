@@ -131,12 +131,16 @@ _exceptionInvalidOpcodeHandler:
 
 ; System Call
 _syscall_handler:
+	
+	push rbp
+	mov rbp, rsp
 
 	pushState
 
 	call syscallDispatcher
 
 	popState
+	pop rbp
 
 	iretq
 

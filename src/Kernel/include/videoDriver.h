@@ -68,5 +68,8 @@ void delChar();
 void newLine();
 void accomodateScreen();
 void clear();
+void getSize(int * x, int * y);
+void drawBall(Color color, int radius, int x, int y);
+void drawRectangle(Color color, int b, int h, int x, int y);
 
 #endif

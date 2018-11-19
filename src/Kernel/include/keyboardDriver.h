@@ -8,10 +8,10 @@
 
 #define CTRL 0
 #define ALT 0
-#define UP 31
+#define UP 11
 #define RIGHT 0
 #define LEFT 0
-#define DOWN 30
+#define DOWN 10
 #define ESC 0
 #define BACKSPACE '\b'
 #define TAB 0

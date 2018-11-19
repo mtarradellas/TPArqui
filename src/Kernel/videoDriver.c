@@ -7,6 +7,7 @@
 #include <naiveConsole.h>
 #include <lib.h>
 
+
 #define CHAR_WIDTH 8
 #define CHAR_HEIGHT 11
 
@@ -59,7 +60,7 @@ void plotPixel(int x, int y, Color color){
 // draws char by pixel acording to  font array located in font.h (not for user use)
 void drawChar(char c, int x, int y, Color color) {
     
-    if (c > 31){//our font map has characters starting at 31 on the ascii                      
+    if (c > 31 && c < 127){//our font map has characters starting at 31 on the ascii                      
         char * charDesign= charMap((int)c - 1);
         for (int j=0; j < CHAR_HEIGHT; j++){
             for (int i = 0; i < CHAR_WIDTH; i++) {
@@ -150,4 +151,30 @@ void clear() {
     }
     cursor_x = MARGIN;
     cursor_y = MARGIN;
+}
+
+void getSize(int * x, int * y){
+    *x = videoStruct->XResolution;
+    *y = videoStruct->YResolution;
+
+}
+
+void drawBall(Color color, int radius, int x, int y){
+
+
+    for(int i = -radius; i <= radius; i++){
+        for(int j = -radius; j <= radius; j++){
+            if(i*i+j*j <= radius*radius){
+                plotPixel(x+i, y+j, color);
+            }
+        }
+    }
+}
+
+void drawRectangle(Color color, int b, int h, int x, int y){
+    for(int i = -b; i <= b; i++){
+        for(int j = -h; j <= h; j++){
+            plotPixel(x+i, y+j, color);
+        }
+    }
 }

@@ -3,6 +3,8 @@
 #include "videoDriver.h"
 #include "timeDriver.h"
 #include "SYSCDispatcher.h"
+#include "test.h"
+
 
 void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, uint64_t p4, uint64_t p5) {
 	switch(syscall) {
@@ -10,40 +12,46 @@ void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, 
 			read(p1, p2, p3);
 			break;
 		case WRITE:
-			write(p1, (char*) p2, (Color*) p3, p4, p5);
+			write(p1, p2, p3, p4, p5);
 			break;
 		case WAIT:
 			wait( *( (int*) p1) );
 			break;
+		case BALL:
+			drawBall( *((Color*) p1), *((int*)p2), *((int*) p3), *((int*) p4));
+			break;
+		case RECTANGLE:
+			drawRectangle(*((Color*) p1), *((int*) p2), *((int*) p3), *((int*) p4), *((int*) p5));
+			break;
 	}
 }
 
-void read(uint64_t mode, uint64_t dest, uint64_t time) {
-	unsigned int * t = (unsigned int *) dest;
-	char * c = (char *) dest;
+void read(uint64_t mode, uint64_t p1, uint64_t p2) {
+	unsigned int * t = (unsigned int *) p1;
+	char * c = (char *) p1;
 	switch(mode) {
 		case TIME:
-			getTime(t, time);
+			getTime(t, p2);
 			break;
 		case KEY:
 			*c = getKey();
 			break;
+		case SCREENSIZE:
+			getSize((int*) p1, (int*) p2);
+			break;
 	}
 }
 
-void write(uint64_t mode, char * c, Color * color, uint64_t p3, uint64_t p4) {
+void write(uint64_t mode, uint64_t p1, uint64_t p2, uint64_t p3, uint64_t p4) {
+	Color white = {255, 255, 255};
 	switch(mode) {
 		case CHARACTER:
-			printChar(*c, *color);
+			printChar(*((char*) p1), *((Color*) p2));
 			break;
 		case DRAWCHAR:
-			drawChar(*c, *((int*) p3), *((int*) p4), *color);
+			drawChar(*((char*) p1), *((int*) p3), *((int*) p4), *((Color*) p2));
 		case CLEAR:
 			clear();
-			break;
-
-		case PAINT:
-			//paint(*c, *color, *((int*)p3), *((int*) p4));
 			break;
 	}
 }

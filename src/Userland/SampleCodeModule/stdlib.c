@@ -118,7 +118,3 @@ int strCmp(char * a, char * b) {
 	if (*b)	return -1;
 	return 0;
 }
-
-void wait(int n) {
-	systemCall(WAIT, (uint64_t) &n, 0, 0, 0, 0);
-}

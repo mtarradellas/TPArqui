@@ -20,7 +20,7 @@ int getCommand(char * command);
 void help();
 void clear();
 void time();
-//void pong();
+void pong();
 void zeroDiv();
 void invOpCode();
 void aleDuto();

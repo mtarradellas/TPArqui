@@ -33,6 +33,7 @@ void initShell(){
 
       case PONG:
           pong();
+          printf("lenia te amo\n");
           break;
 
       case ZERODIV:
@@ -100,6 +101,8 @@ void time(){
 void pong() {
   startPong();
   clear();
+  initShell();
+  return;
 }
 
 void zeroDiv() {
